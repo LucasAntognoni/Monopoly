@@ -1,6 +1,22 @@
 from random import choices, randint
 
 
+class Property:
+    """
+        Property object that contains it's price, rent and owner.
+
+        Attributes:
+            owner (int): player that owns the property
+            rent  (int): renting price
+            price (int): property price
+    """
+
+    def __init__(self):
+        self.owner = None
+        self.rent = randint(100, 100000)
+        self.price = randint(100, 100000)
+
+
 class Player:
     """
         Player object with it's defined strategy, balance and current position.
