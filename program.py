@@ -1,4 +1,5 @@
 import sys
+import pandas as pd
 
 from game import Game
 
@@ -85,6 +86,32 @@ def main():
 
     for simulation in range(number_of_simulations):
         results.append(run(simulation, max_number_of_turns))
+
+    data = pd.DataFrame(results, columns=["game", "turns", "winner"])
+
+    print("######################\n  Simulation results\n######################\n")
+
+    print(f"Number of games played: {number_of_simulations}\nMaximum number of turns: {max_number_of_turns}\n")
+
+    timed_out_games = data.query('turns == 1000').turns.count()
+    print(f"Number of timed out games: {timed_out_games}\n")
+
+    mean_turns = round(data.turns.mean())
+    print(f"Mean number of turns: {mean_turns}\n")
+
+    strategy_results = {
+        "Impulsive": round(100 * (data.query('winner == 0').turns.count() / number_of_simulations), 2),
+        "Demanding": round(100 * (data.query('winner == 1').turns.count() / number_of_simulations), 2),
+        "Careful": round(100 * (data.query('winner == 2').turns.count() / number_of_simulations), 2),
+        "Random": round(100 * (data.query('winner == 3').turns.count() / number_of_simulations), 2)
+    }
+
+    for key, value in strategy_results.items():
+        print(f"Wins by {key} player: {value}")
+
+    print(f"\nStrategy with most wins: {max(strategy_results, key=strategy_results.get)}")
+
+    print("\n######################")
 
 
 if __name__ == '__main__':
