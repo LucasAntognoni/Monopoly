@@ -1,4 +1,28 @@
-from random import choices, randint
+from random import choices, randint, shuffle
+
+
+class Game:
+    """
+        Game object contains game number, turns played, list of players and the board.
+
+        Args:
+            number  (int):  the game identification
+
+        Attributes:
+            number  (int):  game id
+            turns   (int):  number of turns played
+            board   (list): game board (Property)
+            players (list): list of player (Player)
+    """
+
+    def __init__(self, number):
+        self.turns = 0
+        self.number = number
+        self.board = [Property() for _ in range(20)]
+
+        # Shuffle players list
+        self.players = [Player(i) for i in range(4)]
+        shuffle(self.players)
 
 
 class Property:
