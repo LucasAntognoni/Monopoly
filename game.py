@@ -1,3 +1,4 @@
+from operator import attrgetter
 from random import choices, randint, shuffle
 
 
@@ -23,6 +24,34 @@ class Game:
         # Shuffle players list
         self.players = [Player(i) for i in range(4)]
         shuffle(self.players)
+
+    def clear_properties(self, player):
+        """
+            Removes players properties.
+
+            Args:
+                player (int): The player that lost the game
+        """
+
+        for tile in self.board:
+            if tile.owner == player:
+                tile.owner = None
+
+    def finish(self):
+        """
+            Finishes a game and returns the results.
+
+            Returns:
+                number: game identification
+                turns: number of turns played
+                winner: player that won the game
+        """
+
+        if len(self.players) == 1:
+            return self.number, self.turns, self.players[0].strategy
+        else:
+            winner = max(self.players, key=attrgetter("balance"))
+            return self.number, self.turns, winner.strategy
 
 
 class Property:
